@@ -84,3 +84,10 @@ resource "helm_release" "argocd" {
 
   create_namespace = true
 }
+
+
+terraform {
+  backend "gcs" {
+    bucket = "tfstate-live-departures"
+  }
+}
