@@ -51,3 +51,10 @@ resource "google_container_cluster" "autopilot" {
 
   deletion_protection = false
 }
+
+
+terraform {
+  backend "gcs" {
+    bucket = "tfstate-live-departures"
+  }
+}
