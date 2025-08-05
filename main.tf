@@ -5,6 +5,14 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 5.0"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.0"
+    }
   }
 }
 
@@ -50,4 +58,29 @@ resource "google_container_cluster" "autopilot" {
   }
 
   deletion_protection = false
+}
+
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  host                   = google_container_cluster.autopilot.endpoint
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(google_container_cluster.autopilot.master_auth[0].cluster_ca_certificate)
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = google_container_cluster.autopilot.endpoint
+    token                  = data.google_client_config.default.access_token
+    cluster_ca_certificate = base64decode(google_container_cluster.autopilot.master_auth[0].cluster_ca_certificate)
+  }
+}
+
+resource "helm_release" "argocd" {
+  name       = "argo-cd"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  namespace  = "argocd"
+
+  create_namespace = true
 }
