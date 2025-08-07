@@ -1,6 +1,6 @@
 variable "project_id" {
   description = "The GCP project ID"
-  default     = "stonoga"
+  default     = "live-departures"
 }
 
 variable "region" {

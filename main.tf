@@ -63,22 +63,22 @@ resource "google_container_cluster" "autopilot" {
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
-  host                   = google_container_cluster.autopilot.endpoint
-  token                  = data.google_client_config.default.access_token
+  host  = google_container_cluster.autopilot.endpoint
+  token = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(google_container_cluster.autopilot.master_auth[0].cluster_ca_certificate)
 }
 
 provider "helm" {
   kubernetes {
-    host                   = google_container_cluster.autopilot.endpoint
-    token                  = data.google_client_config.default.access_token
+    host  = google_container_cluster.autopilot.endpoint
+    token = data.google_client_config.default.access_token
     cluster_ca_certificate = base64decode(google_container_cluster.autopilot.master_auth[0].cluster_ca_certificate)
   }
 }
 
 
-terraform {
-  backend "gcs" {
-    bucket = "tfstate-live-departures"
-  }
-}
+# terraform {
+#   backend "gcs" {
+#     bucket = "terraform-state-live-departures"
+#   }
+# }

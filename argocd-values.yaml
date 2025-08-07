@@ -1,0 +1,17 @@
+configs:
+  rbac:
+    policy.csv: |
+      g, lnidecki@gmail.com, role:admin
+    policy.default: ""
+  cm:
+    url: https://localhost:8081
+    dex.config: |
+      connectors:
+      - type: oidc
+        id: google
+        name: Google
+        config:
+          issuer: https://accounts.google.com
+          clientID: ${google_client_id}
+          clientSecret: ${google_client_secret}
+          redirectURI: https://localhost:8081/auth/callback

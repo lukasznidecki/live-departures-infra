@@ -1,3 +1,12 @@
+data "google_secret_manager_secret_version" "google_oauth_client_id" {
+  secret = "google-oauth-client-id"
+}
+
+data "google_secret_manager_secret_version" "google_oauth_client_secret" {
+  secret = "google-oauth-client-secret"
+}
+
+
 resource "helm_release" "argocd" {
   name       = "argo-cd"
   repository = "https://argoproj.github.io/argo-helm"
@@ -11,9 +20,17 @@ resource "helm_release" "argocd" {
     value = "false"
   }
 
+  values = [
+    templatefile("argocd-values.yaml", {
+      google_client_id     = data.google_secret_manager_secret_version.google_oauth_client_id.secret_data
+      google_client_secret = data.google_secret_manager_secret_version.google_oauth_client_secret.secret_data
+    })
+  ]
+
+
   set {
     name  = "dex.enabled"
-    value = "false"
+    value = "true"
   }
 
   set {
