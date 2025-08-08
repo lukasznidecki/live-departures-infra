@@ -77,8 +77,8 @@ provider "helm" {
 }
 
 
-# terraform {
-#   backend "gcs" {
-#     bucket = "terraform-state-live-departures"
-#   }
-# }
+terraform {
+  backend "gcs" {
+    bucket = "terraform-state-live-departures"
+  }
+}
