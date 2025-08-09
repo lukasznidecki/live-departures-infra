@@ -16,7 +16,6 @@
   &nbsp;
   <img src="demo2.gif" height="75%" alt="Map View" />
 </p>
-<p align="center"><em>Departures (left) and map (right) views from the Live Departures PWA</em></p>
 
 * 🖼️ **Frontend (PWA):** [github.com/lukasznidecki/live-departures](https://github.com/lukasznidecki/live-departures)  
 * 🧪 **Backend API:** [github.com/lukasznidecki/live-departures-backend](https://github.com/lukasznidecki/live-departures-backend)
