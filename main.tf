@@ -22,7 +22,7 @@ provider "google" {
 }
 
 resource "google_compute_network" "vpc" {
-  name                    = "gke-vpc"
+  name                    = "gke-vpc-2"
   auto_create_subnetworks = false
 }
 
