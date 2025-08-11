@@ -6,6 +6,10 @@ data "google_secret_manager_secret_version" "google_oauth_client_secret" {
   secret = "google-oauth-client-secret"
 }
 
+data "google_secret_manager_secret_version" "github_key" {
+  secret = "github_key"
+}
+
 
 resource "helm_release" "argocd" {
   name       = "argo-cd"
@@ -20,18 +24,18 @@ resource "helm_release" "argocd" {
     value = "false"
   }
 
-  values = [
-    templatefile("argocd-values.yaml", {
-      google_client_id     = data.google_secret_manager_secret_version.google_oauth_client_id.secret_data
-      google_client_secret = data.google_secret_manager_secret_version.google_oauth_client_secret.secret_data
-    })
-  ]
+#   values = [
+#     templatefile("argocd-values.yaml", {
+#       google_client_id     = data.google_secret_manager_secret_version.google_oauth_client_id.secret_data
+#       google_client_secret = data.google_secret_manager_secret_version.google_oauth_client_secret.secret_data
+#     })
+#   ]
 
 
-  set {
-    name  = "dex.enabled"
-    value = "true"
-  }
+#   set {
+#     name  = "dex.enabled"
+#     value = "true"
+#   }
 
   set {
     name  = "applicationSet.enabled"
@@ -105,4 +109,15 @@ resource "helm_release" "argocd" {
     name  = "redis.resources.requests.memory"
     value = "128Mi"
   }
+}
+
+resource "kubectl_manifest" "live_departures_repo" {
+  yaml_body = templatefile("${path.module}/live-departures-backend-repo.yaml", {
+    github_ssh_key = data.google_secret_manager_secret_version.github_key.secret_data
+  })
+}
+
+resource "kubectl_manifest" "my_app" {
+  yaml_body = file("${path.module}/live-departures-backend.yaml")
+  depends_on = [kubectl_manifest.live_departures_repo]
 }
