@@ -24,18 +24,18 @@ resource "helm_release" "argocd" {
     value = "false"
   }
 
-#   values = [
-#     templatefile("argocd-values.yaml", {
-#       google_client_id     = data.google_secret_manager_secret_version.google_oauth_client_id.secret_data
-#       google_client_secret = data.google_secret_manager_secret_version.google_oauth_client_secret.secret_data
-#     })
-#   ]
+  values = [
+    templatefile("argocd-values.yaml", {
+      google_client_id     = data.google_secret_manager_secret_version.google_oauth_client_id.secret_data
+      google_client_secret = data.google_secret_manager_secret_version.google_oauth_client_secret.secret_data
+    })
+  ]
 
 
-#   set {
-#     name  = "dex.enabled"
-#     value = "true"
-#   }
+  set {
+    name  = "dex.enabled"
+    value = "true"
+  }
 
   set {
     name  = "applicationSet.enabled"
