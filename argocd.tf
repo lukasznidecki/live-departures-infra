@@ -118,6 +118,6 @@ resource "kubectl_manifest" "live_departures_repo" {
 }
 
 resource "kubectl_manifest" "my_app" {
-  yaml_body = file("${path.module}/live-departures-backend.yaml")
+  yaml_body  = file("${path.module}/live-departures-backend.yaml")
   depends_on = [kubectl_manifest.live_departures_repo]
 }
