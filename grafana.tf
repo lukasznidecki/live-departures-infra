@@ -18,7 +18,12 @@ resource "helm_release" "prometheus" {
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "prometheus"
   version    = "25.8.0"
-  namespace  = kubernetes_namespace.monitoring.metadata[0].name
+  namespace  = kubernetes_namespace.monitoring.metadata[0].named
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
 
   values = [
     yamlencode({
