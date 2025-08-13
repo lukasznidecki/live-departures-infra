@@ -28,9 +28,11 @@ resource "helm_release" "kube_prometheus_stack" {
       }
 
       prometheusOperator = {
+        tls = { enabled = false }
         admissionWebhooks = {
           enabled = false
-        patch = { enabled = false } }
+          patch   = { enabled = false }
+        }
         resources = {
           requests = { cpu = "50m", memory = "128Mi" }
           limits   = { cpu = "200m", memory = "256Mi" }
