@@ -6,10 +6,6 @@ data "google_secret_manager_secret_version" "google_oauth_client_secret" {
   secret = "google-oauth-client-secret"
 }
 
-data "google_secret_manager_secret_version" "github_key" {
-  secret = "github_key"
-}
-
 
 resource "helm_release" "argocd" {
   name       = "argo-cd"
@@ -112,12 +108,13 @@ resource "helm_release" "argocd" {
 }
 
 resource "kubectl_manifest" "live_departures_repo" {
+  depends_on = [helm_release.argocd]
   yaml_body = templatefile("${path.module}/live-departures-backend-repo.yaml", {
-    github_ssh_key = data.google_secret_manager_secret_version.github_key.secret_data
+    github_token = data.google_secret_manager_secret_version.github_token.secret_data
   })
 }
 
 resource "kubectl_manifest" "my_app" {
-  yaml_body  = file("${path.module}/live-departures-backend.yaml")
+  yaml_body  = file("${path.module}/live-departures-backend-app.yaml")
   depends_on = [kubectl_manifest.live_departures_repo]
 }

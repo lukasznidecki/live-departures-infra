@@ -16,7 +16,7 @@ spec:
       - name: name
         value: live-departures-backend
     path: helm/live-departures-backend
-    repoURL: git@github.com:lukasznidecki/live-departures-backend.git
+    repoURL: https://github.com/lukasznidecki/live-departures-backend.git
     targetRevision: master
   syncPolicy:
     automated:
