@@ -14,31 +14,31 @@ resource "helm_release" "kube_prometheus_stack" {
 
   values = [
     yamlencode({
-      defaultRules = { create = false }
-      alertmanager = { enabled = false }
+      defaultRules     = { create = false }
+      alertmanager     = { enabled = false }
       kubeStateMetrics = { enabled = false }
-      nodeExporter = { enabled = false }
+      nodeExporter     = { enabled = false }
 
-      kubeApiServer = { enabled = false }
+      kubeApiServer         = { enabled = false }
       kubeControllerManager = { enabled = false }
-      kubeScheduler = { enabled = false }
-      kubeProxy = { enabled = false }
-      coreDns = { enabled = false }
-      kubeEtcd = { enabled = false }
+      kubeScheduler         = { enabled = false }
+      kubeProxy             = { enabled = false }
+      coreDns               = { enabled = false }
+      kubeEtcd              = { enabled = false }
 
       kubelet = {
-        enabled = false
-        service = { enabled = false }
+        enabled        = false
+        service        = { enabled = false }
         serviceMonitor = { enabled = false }
       }
 
       prometheusOperator = {
         admissionWebhooks = {
           enabled = false
-          patch = { enabled = false } }
+        patch = { enabled = false } }
         resources = {
           requests = { cpu = "50m", memory = "128Mi" }
-          limits = { cpu = "200m", memory = "256Mi" }
+          limits   = { cpu = "200m", memory = "256Mi" }
         }
       }
 
@@ -47,20 +47,20 @@ resource "helm_release" "kube_prometheus_stack" {
         service = { type = "ClusterIP" }
         resources = {
           requests = { cpu = "50m", memory = "128Mi" }
-          limits = { cpu = "200m", memory = "256Mi" }
+          limits   = { cpu = "200m", memory = "256Mi" }
         }
       }
 
       prometheus = {
         prometheusSpec = {
-          replicas       = 1
-          retention      = "12h"
-          enableAdminAPI = false
+          replicas               = 1
+          retention              = "12h"
+          enableAdminAPI         = false
           serviceMonitorSelector = {}
-          podMonitorSelector = {}
+          podMonitorSelector     = {}
           resources = {
             requests = { cpu = "100m", memory = "256Mi" }
-            limits = { cpu = "500m", memory = "512Mi" }
+            limits   = { cpu = "500m", memory = "512Mi" }
           }
         }
       }
