@@ -8,6 +8,6 @@ metadata:
 type: Opaque
 stringData:
   type: git
-  url: git@github.com:lukasznidecki/live-departures-backend.git
-  sshPrivateKey: |
-${indent(4, github_ssh_key)}
+  url: https://github.com/lukasznidecki/live-departures-backend.git
+  username: lukasznidecki
+  password: ${github_token}

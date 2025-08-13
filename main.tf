@@ -26,7 +26,7 @@ provider "google" {
 }
 
 resource "google_compute_network" "vpc" {
-  name                    = "gke-vpc-2"
+  name                    = "gke-vpc"
   auto_create_subnetworks = false
 }
 
