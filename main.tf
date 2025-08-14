@@ -163,7 +163,7 @@ provider "kubectl" {
 # Backend configuration - uncomment and configure based on your choice
 terraform {
   backend "gcs" {
-    bucket = "terraform-state-live-departures" # For GCP
+    bucket = "terraform-state-live-departures"
   }
 }
 
