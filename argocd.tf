@@ -41,12 +41,12 @@ resource "helm_release" "argocd" {
     value = "false"
   }
 
-    values = [
-      templatefile("argocd-values.yaml", {
-        google_client_id     = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.google_oauth_client_id[0].secret_data : data.aws_secretsmanager_secret_version.google_oauth_client_id[0].secret_string
-        google_client_secret = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.google_oauth_client_secret[0].secret_data : data.aws_secretsmanager_secret_version.google_oauth_client_secret[0].secret_string
-      })
-    ]
+  values = [
+    templatefile("argocd-values.yaml", {
+      google_client_id     = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.google_oauth_client_id[0].secret_data : data.aws_secretsmanager_secret_version.google_oauth_client_id[0].secret_string
+      google_client_secret = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.google_oauth_client_secret[0].secret_data : data.aws_secretsmanager_secret_version.google_oauth_client_secret[0].secret_string
+    })
+  ]
 
 
   set {
