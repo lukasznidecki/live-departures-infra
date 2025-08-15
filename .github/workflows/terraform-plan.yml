@@ -31,6 +31,12 @@ jobs:
           workload_identity_provider: "projects/253099366664/locations/global/workloadIdentityPools/gh-pool/providers/github-provider"
           service_account: "github-actions-sa@live-departures.iam.gserviceaccount.com"
 
+      - name: Authenticate to AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::765639302499:role/github
+          aws-region: us-west-2
+
       - name: Terraform Format Check
         run: terraform fmt -check
 
