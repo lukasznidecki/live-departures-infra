@@ -1,7 +1,3 @@
-data "google_secret_manager_secret_version" "github_token" {
-  secret = "github-token"
-}
-
 resource "kubernetes_namespace" "live_departures" {
   metadata {
     name = "live-departures"
@@ -21,9 +17,9 @@ resource "kubernetes_secret" "ghcr_creds" {
       auths = {
         "ghcr.io" = {
           username = "lukasznidecki"
-          password = data.google_secret_manager_secret_version.github_token.secret_data
+          password = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.github_token[0].secret_data : data.aws_secretsmanager_secret_version.github_token[0].secret_string
           email    = "unused@example.com"
-          auth     = base64encode("lukasznidecki:${data.google_secret_manager_secret_version.github_token.secret_data}")
+          auth     = base64encode("lukasznidecki:${var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.github_token[0].secret_data : data.aws_secretsmanager_secret_version.github_token[0].secret_string}")
         }
       }
     })

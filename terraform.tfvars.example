@@ -1,0 +1,29 @@
+# Multi-Cloud Configuration Example
+# Copy this file to terraform.tfvars and customize for your deployment
+
+# Cloud Provider Selection (required)
+# Options: "gcp" or "aws"
+cloud_provider = "gcp"
+
+# Cluster Configuration (required)
+cluster_name = "live-departures-cluster"
+
+# GCP Configuration (only used when cloud_provider = "gcp")
+project_id = "your-gcp-project-id"
+region     = "europe-west4"
+
+# AWS Configuration (only used when cloud_provider = "aws")
+aws_region = "us-west-2"
+
+# Example configurations for different scenarios:
+
+## For GCP deployment:
+# cloud_provider = "gcp"
+# project_id = "my-project-123456"
+# region = "europe-west4"
+# cluster_name = "my-gke-cluster"
+
+## For AWS deployment:
+# cloud_provider = "aws"
+# aws_region = "us-west-2"
+# cluster_name = "my-eks-cluster"

@@ -1,9 +1,30 @@
-data "google_secret_manager_secret_version" "google_oauth_client_id" {
-  secret = "google-oauth-client-id"
+data "google_secret_manager_secret_version" "github_token" {
+  count  = var.cloud_provider == "gcp" ? 1 : 0
+  secret = "github-token"
 }
 
+data "aws_secretsmanager_secret_version" "github_token" {
+  count     = var.cloud_provider == "aws" ? 1 : 0
+  secret_id = "github-token"
+}
+
+data "google_secret_manager_secret_version" "google_oauth_client_id" {
+  count  = var.cloud_provider == "gcp" ? 1 : 0
+  secret = "github-token"
+}
+
+data "aws_secretsmanager_secret_version" "google_oauth_client_id" {
+  count     = var.cloud_provider == "aws" ? 1 : 0
+  secret_id = "github-token"
+}
 data "google_secret_manager_secret_version" "google_oauth_client_secret" {
-  secret = "google-oauth-client-secret"
+  count  = var.cloud_provider == "gcp" ? 1 : 0
+  secret = "github-token"
+}
+
+data "aws_secretsmanager_secret_version" "google_oauth_client_secret" {
+  count     = var.cloud_provider == "aws" ? 1 : 0
+  secret_id = "github-token"
 }
 
 
@@ -22,8 +43,8 @@ resource "helm_release" "argocd" {
 
   values = [
     templatefile("argocd-values.yaml", {
-      google_client_id     = data.google_secret_manager_secret_version.google_oauth_client_id.secret_data
-      google_client_secret = data.google_secret_manager_secret_version.google_oauth_client_secret.secret_data
+      google_client_id     = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.google_oauth_client_id[0].secret_data : data.aws_secretsmanager_secret_version.google_oauth_client_id[0].secret_string
+      google_client_secret = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.google_oauth_client_secret[0].secret_data : data.aws_secretsmanager_secret_version.google_oauth_client_secret[0].secret_string
     })
   ]
 
@@ -110,7 +131,7 @@ resource "helm_release" "argocd" {
 resource "kubectl_manifest" "live_departures_repo" {
   depends_on = [helm_release.argocd]
   yaml_body = templatefile("${path.module}/live-departures-backend-repo.yaml", {
-    github_token = data.google_secret_manager_secret_version.github_token.secret_data
+    github_token = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.github_token[0].secret_data : data.aws_secretsmanager_secret_version.github_token[0].secret_string
   })
 }
 
