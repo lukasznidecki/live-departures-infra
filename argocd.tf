@@ -130,9 +130,7 @@ resource "helm_release" "argocd" {
 
 resource "kubectl_manifest" "live_departures_repo" {
   depends_on = [helm_release.argocd]
-  yaml_body = templatefile("${path.module}/live-departures-backend-repo.yaml", {
-    github_token = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.github_token[0].secret_data : data.aws_secretsmanager_secret_version.github_token[0].secret_string
-  })
+  yaml_body  = file("${path.module}/live-departures-backend-repo.yaml")
 }
 
 resource "kubectl_manifest" "my_app" {

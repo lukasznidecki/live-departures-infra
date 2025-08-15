@@ -9,5 +9,3 @@ type: Opaque
 stringData:
   type: git
   url: https://github.com/lukasznidecki/live-departures-backend.git
-  username: lukasznidecki
-  password: ${github_token}

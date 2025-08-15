@@ -1,3 +1,14 @@
+locals {
+  github_token = var.cloud_provider == "gcp" ? (
+    data.google_secret_manager_secret_version.github_token[0].secret_data
+    ) : (
+    try(
+      jsondecode(data.aws_secretsmanager_secret_version.github_token[0].secret_string).token,
+      data.aws_secretsmanager_secret_version.github_token[0].secret_string
+    )
+  )
+}
+
 resource "kubernetes_namespace" "live_departures" {
   metadata {
     name = "live-departures"
@@ -17,9 +28,9 @@ resource "kubernetes_secret" "ghcr_creds" {
       auths = {
         "ghcr.io" = {
           username = "lukasznidecki"
-          password = var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.github_token[0].secret_data : data.aws_secretsmanager_secret_version.github_token[0].secret_string
+          password = local.github_token
           email    = "unused@example.com"
-          auth     = base64encode("lukasznidecki:${var.cloud_provider == "gcp" ? data.google_secret_manager_secret_version.github_token[0].secret_data : data.aws_secretsmanager_secret_version.github_token[0].secret_string}")
+          auth     = base64encode("lukasznidecki:${local.github_token}")
         }
       }
     })
