@@ -1,0 +1,17 @@
+name: Security Scan
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          config_file: .checkov.yaml

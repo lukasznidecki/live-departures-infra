@@ -1,0 +1,10 @@
+framework:
+  - terraform
+  - kubernetes
+
+directory:
+  - .
+
+hard-fail-on:
+  - HIGH
+  - CRITICAL
