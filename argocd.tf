@@ -10,21 +10,21 @@ data "aws_secretsmanager_secret_version" "github_token" {
 
 data "google_secret_manager_secret_version" "google_oauth_client_id" {
   count  = var.cloud_provider == "gcp" ? 1 : 0
-  secret = "github-token"
+  secret = "google-oauth-client-id"
 }
 
 data "aws_secretsmanager_secret_version" "google_oauth_client_id" {
   count     = var.cloud_provider == "aws" ? 1 : 0
-  secret_id = "github-token"
+  secret_id = "google-oauth-client-id"
 }
 data "google_secret_manager_secret_version" "google_oauth_client_secret" {
   count  = var.cloud_provider == "gcp" ? 1 : 0
-  secret = "github-token"
+  secret = "google-oauth-client-secret"
 }
 
 data "aws_secretsmanager_secret_version" "google_oauth_client_secret" {
   count     = var.cloud_provider == "aws" ? 1 : 0
-  secret_id = "github-token"
+  secret_id = "google-oauth-client-secret"
 }
 
 
